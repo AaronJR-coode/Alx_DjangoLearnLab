@@ -2,6 +2,8 @@ from relationship_app.models import Author, Book, Library, Librarian
 
 
 author = Author.objects.get(name=author_name)
+books_by_author = Book.objects.filter(author=author)
+print(f"Books by {author.name}: {[book.title for book in books_by_author]}")
 books_by_author = author.books.all()  
 print(f"Books by {author.name}: {[book.title for book in books_by_author]}")
 
