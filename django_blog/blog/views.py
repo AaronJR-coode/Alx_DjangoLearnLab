@@ -83,8 +83,7 @@ class PostDeleteView(LoginRequiredMixin,UserPassesTestMixin,DeleteView):
         """Only allow the author to delete the post."""
         post = self.get_object()
         return self.request.user == post.author
-
-
+    return reverse_lazy('post-detail', kwargs={'pk': self.object.post.id})
 
 class CommentCreateView(LoginRequiredMixin,CreateView):
     model = Comment
@@ -121,3 +120,4 @@ class CommentDeleteView(LoginRequiredMixin, UserPassesTestMixin, DeleteView):
         comment = self.get_object()
 
         return self.request.user == comment.author
+
