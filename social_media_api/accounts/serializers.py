@@ -18,7 +18,7 @@ class UserSerializer(serializers.ModelSerializer):
     
 
     def get_followers(self, obj):
-        return obj.followers.count()
+        return User.objects.filter(followers=obj).count()
     
 class RegisterSerializer(serializers.ModelSerializer):
     password = serializers.CharField(min_length=8, write_only=True)
@@ -31,11 +31,13 @@ class RegisterSerializer(serializers.ModelSerializer):
 
     def create(self, validate_data):
         user = User.objects.create_user(
-            username=validate_data['username'],
-            email=validate_data.get('email'),
-            password=validate_data['password']
+            username=validated_data["username"],
+            email=validated_data["email"],
+            password=validated_data["password"],
         )
+        Token.objects.create(user=user)
         return user
+        
     
 
 class LoginSerializer(serializers.Serializer):
@@ -47,4 +49,5 @@ class LoginSerializer(serializers.Serializer):
         if not user:
             raise serializers.ValidationError("Invalid username or password")
         data["user"] = user
+
         return data
