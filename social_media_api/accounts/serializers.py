@@ -3,6 +3,8 @@ from django.contrib.auth import authenticate
 from rest_framework.authtoken.models import Token
 from .models import User
 
+User = get_user_model()
+
 class UserSerializer(serializers.ModelSerializer):
     following = serializers.SerializerMethodField()
     followers = serializers.SerializerMethodField()
@@ -52,4 +54,5 @@ class LoginSerializer(serializers.Serializer):
         data["user"] = user
 
         return data
+
 
